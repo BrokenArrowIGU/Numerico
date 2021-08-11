@@ -1,0 +1,292 @@
+################################################################################################
+###   EXERCÍCIO 1    
+#==================================================================================
+# ================================= Gauss-Jacobi ==================================
+#################################
+# Transform Ax=B on x=Cx+g
+# Autor: Daniel Marques
+# Electrical Engeneering - 2021
+#################################
+#==================================================================================
+
+import numpy as np
+import time
+# ================================== Space for Functions ==========================
+def GaussJacobino(mtx,x,b,mak):
+    c=np.zeros([np.size(b),np.size(b)])
+    for i in range(np.size(b)):                       # Construction of Matrix C
+        for j in range(np.size(b)):                   #
+          c[i,j]=-mtx[i,j]/mtx[i,i]                   #
+        c[i,i]=0                                      #
+        sol=np.zeros(np.size(b))                      #
+    for i in range(np.size(b)):
+        sol=(c@x)
+    for i in range(np.size(b)):
+        sol[i]=sol[i]+(b[i]/mtx[i,i])
+        if abs(sol[i])>mak:                           # Take the major valor absolute
+            mak=abs(sol[i])                           #
+    return sol,mak
+# ================================== Space for Input ==============================
+
+matrix=np.array([[10, 2, 1],[1, 5, 1],[2, 3, 10]]) # Linear System
+b=np.array([7, -8, 6])                             # B matrix
+x=np.zeros(np.size(b))
+resolut=[]
+max=k=0
+mak=0
+for i in range(np.size(b)):
+    alp=0
+    for j in range(np.size(b)):
+        if j!=i:
+            alp=alp+matrix[i,j]
+    if (alp/matrix[i,i])>max:
+        max=alp/matrix[i,i]
+if max<1:
+    print('Temos garantia de convergencia')
+for i in range(np.size(b)):
+    x[i]=float(input('Digite x0:'))
+# ============================== Error Definition =================================
+error = .05 
+e=2*error
+# ============================== Main Loop/Output =================================
+start=time.time_ns()
+while (error<e):
+    resolut,mak=GaussJacobino(matrix,x,b,mak)
+    max=0
+    print(resolut)                            #Solution of Interation
+    for i in range(np.size(b)):
+        a=abs(resolut[i]-x[i])
+        if a>max:
+            max=a
+            
+    for i in range(np.size(x)):
+        x[i]=resolut[i]                       #Update the Resolution X
+    e=max/mak                                 #Error atualization
+    k+=1                                      #Number of interations
+end=time.time_ns()
+print((end-start)*10**-6,'ms')
+print('Numero de interações:',k)
+###################################################################################################  EXERCÍCIO 2 
+#==============================================================================
+# ============================ Gauss-Seidel ===================================
+#################################
+# Similar of Gauss-Jacobi, but more faster and use the before Xn
+# Autor : Daniel Marques
+# Electrical Engeneering - 2021
+#################################
+#==============================================================================
+
+import numpy as np
+import time
+# ============================== Space for Functions ==========================
+
+def pivot (mtx,l,k):
+    i=0
+    while (i+l)<k:
+        if np.abs(mtx[l+i,l])>np.abs(mtx[l,l]):
+          a=mtx[l].copy()
+          mtx[l]=mtx[l+1]
+          mtx[l+1]=a
+        i+=1
+    return mtx
+def GaussSeidel(mtx,x,b,mak):
+    c=np.zeros([np.size(b),np.size(b)])
+    sol=np.zeros(np.size(b))
+
+    for i in range(np.size(b)):                       # Construction of Matrix C
+        for j in range(np.size(b)):                   #                                      
+          c[i,j]=-mtx[i,j]/mtx[i,i]                   #
+        c[i,i]=0                                      #
+   
+    for i in range(np.size(b)):
+        a=0
+        for j in range(np.size(b)):                   #Calc for Xn
+            a+=c[i,j]*x[j]
+            
+            
+        sol[i]=a+(b[i]/mtx[i,i])
+        x[i]=sol[i]                                   #Update the matrix X for interactions
+        
+        
+    if abs(sol[i])>mak:                           	# Take the major valor absolute
+            mak=abs(sol[i])                       	#                      
+    return sol,mak
+# ============================== Space for Input ==============================
+matrix=np.array([[10, 2, 1],[1, 5, 1],[2, 3, 10]]) 	#Linear System
+b=np.array([7, -8, 6])                             	#B matrix
+x=np.zeros(np.size(b))
+aux=np.zeros(np.size(b))
+resolut=[]
+mak=max=0
+alp=n=0
+# ============================== Error Definition =============================
+Error = .05
+e=2*Error
+# ============================== Main Loop/Output =============================
+for i in range(np.size(b)):
+    x[i]=float(input('Defina os valores iniciais:'))
+    aux[i]=x[i]
+start=time.time_ns()
+i=1
+k=np.size(b)
+while(i<k):
+  matrix=pivot(matrix,i,k)
+  i+=1
+for i in range(k):                                              #Convergency Test
+    alp=0
+    for j in range(k):
+        if j!=i:
+            alp=alp+matrix[i,j]
+    if (alp/matrix[i,i])>max:
+        max=alp/matrix[i,i]
+if max<1:
+    print('Temos garantia de convergencia')
+while(e>Error):
+    resolut,mak=GaussSeidel(matrix,x,b,mak)
+    max=0
+    print("\n")
+    for i in range(k):                                          #For Error Calculus
+        a=abs(resolut[i]-aux[i])
+        if a>max:                                               #Major value of interactions
+            max=a
+    e=max/mak                                                   #Error calculus
+    for i in range(np.size(x)):
+        aux[i]=resolut[i]                                       #Update x for Error
+    n+=1
+end=time.time_ns()
+print('\nResultado:',x)
+print('\nInterações:',n)
+print('\n Tempo Necessário:',(end-start)*10**-6,'ms')
+
+# ============================== Space for Plots ==============================
+#################################################################
+###  EXERCÍCIO 3 
+#==============================================================================
+# ============================ Método de Newton ===============================
+#################################
+# Considerations of project
+# Autor : Daniel Marques
+# Electrical Engeneering - 2021
+#################################
+#==============================================================================
+
+import numpy as np
+import  time    
+import math as mt
+# ============================== Space for Functions ==========================
+def modNewton(x,delta,n):
+    Jac = np.zeros([n,n])
+    Fi = np.zeros(n)
+
+    Jac[0,0] = 2*x[0]
+    Jac[0,1] = 2*x[1] 
+    Jac[1,0] = mt.exp(x[0]-1)
+    Jac[1,1] = 3*x[1]**2
+   
+
+    Fi[0] = x[0]**2+x[1]-2
+    Fi[1] = mt.exp(x[0]-1)+x[1]**3-2
+    
+    delta = np.linalg.solve(Jac,Fi)  
+    
+
+    return delta
+# ============================== Space for Input ==============================
+#---------- User Input ------------
+n = int(input('Digite o Número de Incógnitas:'))
+sol = []
+aux = np.zeros(n)
+x = np.zeros(n)
+mak = 0
+for i in range(n):
+    x[i]= float(input('Digite o valor do x0:'))
+    aux[i] = x[i]
+# Definitions of the equation
+# F1 = x^2+y-2=0;
+# F2 = exp^(x-1)+y^3-2=0
+# ============================== Error Definition =============================
+Error = 10**(-6)
+e = 100
+# ============================== Main Loop/Output =============================
+start = time.time_ns()
+while (Error<e):
+    
+    sol = modNewton(x,sol,n)
+        
+    for i in range(n):
+        aux[i] = x[i]-sol[i]
+        if(abs(aux[i]-x[i])/aux[i])<e :
+            e = (abs(aux[i]-x[i])/aux[i])
+        x[i] = aux[i]
+
+    mak+=1
+stop = time.time_ns()
+print('\n A solução é:',x)
+print('\nInterações:',mak)
+print('\n Tempo Necessário:',(stop-start)*10**-6,'ms')
+
+
+#################################################################
+###  EXERCÍCIO 4
+#==============================================================================
+# ============================ Método de Newton Modificado ===============================
+#################################
+# Considerations of project
+# Autor : Daniel Marques
+# Electrical Engeneering - 2021
+#################################
+#==============================================================================
+
+import numpy as np
+import time    
+import math as mt
+# ============================== Space for Functions ==========================
+def modNewton(x,delta,Jac,n):
+    Fi = np.zeros(n)
+
+    Fi[0] = x[0]**2+x[1]-2
+    Fi[1] = mt.exp(x[0]-1)+x[1]**3-2
+    
+    delta = np.linalg.solve(Jac,Fi)  
+    
+
+    return delta
+# ============================== Space for Input ==============================
+#---------- User Input ------------
+n = int(input('Digite o Número de Incógnitas:'))
+sol = []
+aux = np.zeros(n)
+x = np.zeros(n)
+mak = 0
+Jac = np.zeros([n,n])
+for i in range(n):
+    x[i]= float(input('Digite o valor do x0:'))
+    aux[i] = x[i]
+# Definitions of the equation
+# F1 = x^2+y-2=0;
+# F2 = exp^(x-1)+y^3-2=0
+# ============================== Error Definition =============================
+Error = 10**(-6)
+e = 2*Error
+# ============================== Main Loop/Output =============================
+start = time.time_ns()
+Jac[0,0] = 2*x[0]
+Jac[0,1] = 2*x[1] 
+Jac[1,0] = mt.exp(x[0]-1)
+Jac[1,1] = 3*x[1]**2
+
+while (Error<e):
+
+    sol = modNewton(x,sol,Jac,n)   
+    
+    for i in range(n):
+        aux[i] = x[i]-sol[i]
+        if(abs(aux[i]-x[i])/aux[i])<e :
+            e = (abs(aux[i]-x[i])/aux[i])
+        x[i] = aux[i]       
+
+    mak+=1
+stop = time.time_ns()
+print('\n A solução é:',x)
+print('\nInterações:',mak)
+print('\n Tempo Necessário:',(stop-start)*10**-6,'ms')

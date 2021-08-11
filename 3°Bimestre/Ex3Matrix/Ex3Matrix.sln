@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31005.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Ex3Matrix", "Ex3Matrix.pyproj", "{74B4F5DC-99B2-4F8E-820E-8FD1FC1DBA62}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{74B4F5DC-99B2-4F8E-820E-8FD1FC1DBA62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74B4F5DC-99B2-4F8E-820E-8FD1FC1DBA62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FA2FB686-AE2C-414A-A3EF-CAB26F9B3B43}
+	EndGlobalSection
+EndGlobal

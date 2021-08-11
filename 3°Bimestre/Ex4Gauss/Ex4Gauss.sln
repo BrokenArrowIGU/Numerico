@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31005.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Ex4Gauss", "Ex4Gauss.pyproj", "{E9F1F585-B1BB-414B-9798-BDA62D4C5CC8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E9F1F585-B1BB-414B-9798-BDA62D4C5CC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9F1F585-B1BB-414B-9798-BDA62D4C5CC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6659D5BF-4122-4184-8416-720CD16B5EBE}
+	EndGlobalSection
+EndGlobal

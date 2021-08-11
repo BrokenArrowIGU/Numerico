@@ -1,0 +1,89 @@
+#------------------------------------ Método da Bisecção -------------------------------
+ 
+# Esse Acha os ZEROS da Função através de divisões simétricas dos Limites
+
+# Autor : Daniel Marques
+
+import numpy as np
+import matplotlib.pyplot as mp
+
+#---------------------------- Entradas de dados ------------------------
+
+a=input('Digite os Limite inf:')
+limi=float(a)
+b=input('Digite o Limite Sup: ')
+lims=float(b)
+
+# --------------------------- Definição dos Erros ----------------------
+
+E = 10**(-3)
+error = 2*E
+i = 0
+x = float(0)
+ft = []
+t = 0
+# ---------------------------- LOOP Principal---------------------------
+
+while error > E :
+    
+    x = ((limi+lims)/2)
+    fx = np.tanh(4*np.sqrt((9.81*0.25)/x))*np.sqrt((9.81*x)/0.25)-36
+    fa = np.tanh(4*np.sqrt((9.81*0.25)/limi))*np.sqrt((9.81*limi)/0.25)-36
+    fb = np.tanh(4*np.sqrt((9.81*0.25)/lims))*np.sqrt((9.81*lims)/0.25)-36
+
+    if fa*fx < 0:
+        lims = x
+        i+=1
+        error = x - limi
+    else :
+        limi = x
+        i+=1
+        error = lims - x
+
+limi = float(a)
+lims = float(b)
+k = np.arange(10**(-9), lims+0.0001, 0.001)
+
+for t in k:
+
+    ft+=[np.tanh(4*np.sqrt((9.81*0.25)/t))*np.sqrt((9.81*t)/0.25)-36]
+
+ft = np.array(ft)
+# --------------------------------- Saídas ------------------------------
+
+print('O zero é provavelmente: ',x)
+print('Erro de: ', error)
+print('O n° de interações é :',i)
+
+#print(k)
+#print(ft)
+# --------------------------------- Plots -------------------------------
+
+# x axis values
+n = k
+# corresponding y axis values
+m = ft
+p = [x]
+l = [0]
+
+x = np.arange(-10., 10., 0.2)
+
+fig = mp.figure()
+ax = fig.add_subplot(1, 1, 1)
+
+# Move left y-axis and bottim x-axis to centre, passing through (0,0)
+ax.spines['left'].set_position('center')
+ax.spines['bottom'].set_position('center')
+
+# Eliminate upper and right axes
+ax.spines['right'].set_color('none')
+ax.spines['top'].set_color('none')
+
+# Show ticks in the left and lower axes onlyr
+ax.xaxis.set_ticks_position('bottom')
+ax.yaxis.set_ticks_position('left')
+
+
+mp.plot(n, m)
+mp.plot(p,l,'o')
+mp.show()

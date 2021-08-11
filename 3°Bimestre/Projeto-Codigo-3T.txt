@@ -1,0 +1,506 @@
+#################################################################
+###   EXERCÍCIO 1    
+#===================================================================================================
+#------------------------------------ Automatic Generation of Matrix -------------------------------
+# This generate matrix with negative numbers
+# Autor : Daniel Marques
+# Electrical Engeneering - 2021
+#======================================================================
+
+import numpy as np
+
+#----------------------------------------------------------------------
+def generatmatrix(m,n,matrix):
+    a = 2
+    x = -1
+    for i in range(1, m+1):
+        a+=1
+        if a>=n:
+            a = 2
+        line=[]
+        for j in range(1,n+1):
+          if j==(i+1):
+            line.append(x)
+            x=x-1
+          elif i>=n and a==j:
+              line.append(x)
+              x=x-1
+          else:
+            line.append(0)
+         
+        matrix.append(line)                                                                                             
+#----------------------------------------------------------------------
+m=(int(input('Número de Linhas:')))
+n=(int(input('Número de Colunas:')))
+#----------------------------------------------------------------------
+ft=[]
+generatmatrix(m,n,ft)
+print(ft)
+
+#################################################################
+###  EXERCÍCIO 2 
+#===================================================================================================
+#------------------------------------ Automatic Generation of Matrix -------------------------------
+# This generate matrix with conditions for main diagonal and secundary
+# Autor : Daniel Marques
+# Electrical Engeneering - 2021
+#======================================================================
+
+import numpy as np
+
+#----------------------------------------------------------------------
+def genematrix(m,n,matrix):
+    a = n+1
+    for i in range(1, m+1):
+        line=[]
+        a-= 1
+        for j in range(1,n+1):
+          if j==i:
+            line.append(j**2)
+          elif j==a:
+            line.append((j**2)+(i**2))
+          else:
+            line.append(0)
+        matrix.append(line)
+#----------------------------------------------------------------------
+m=(int(input('Número de Linhas:')))
+n=(int(input('Número de Colunas:')))
+#----------------------------------------------------------------------
+ft=[]
+genematrix(m,n,ft)
+print(ft)
+
+#################################################################
+###  EXERCÍCIO 3 
+
+#==============================================================================
+# ============================ Generate Matrix ================================ 
+#################################
+# Gens matrix with matrix containing values and positions 
+# Autor : Daniel Marques
+# Electrical Engeneering - 2021
+#################################
+#==============================================================================
+import time as time
+import numpy as np
+# ============================== Space for Functions ==========================
+def genepv(a,b):
+    matrix =[]
+    k=np.size(b)
+    for i in range(k+1):
+        for j in range(k+1):
+         matrix = np.zeros([i,j])
+    for x in range(k):
+        t=int(a[x][0])
+        u=int(a[x][1])
+        matrix[t-1][u-1]=-b[0][x]
+        matrix[u-1][t-1]=-b[0][x]
+    for r in range(k):
+        s=0
+        for l in range(k):
+           s=s+float(matrix[r][l])
+           if l==k-1:
+               matrix[r][r]=-s
+    return matrix
+# ============================== Space for Input ==============================
+p = np.array([[1, 3], [2, 4], [1, 2], [3, 4]],dtype=float)
+v = np.array([[1,10,5,100]],dtype=float)
+matrix = []
+# ============================== Error Definition =============================
+# ============================== Main Loop/Output =============================
+start=time.time()
+matrix = genepv(p,v)
+end=time.time()
+# ============================== Space for Plots ==============================
+print(end-start)
+print(matrix)
+
+#################################################################
+###  EXERCÍCIO 4
+
+#==============================================================================
+# ============================ Gauss Ingenuo ===============================
+#################################
+# Python function for 'Gauss Ingenuo' without pivoting
+# Autor : Daniel Marques
+# Electrical Engeneering - 2021
+#################################
+#==============================================================================
+import time
+import numpy as np
+import matplotlib.pyplot as mp
+
+# ============================== Space for Functions ==========================
+def zeraelem(mtx, lin, c, k):
+    dy = mtx[c,c]/mtx[lin,c]
+  
+    for i in range(k+1):
+        mtx[lin,i] = mtx[lin,i]*dy-mtx[c,i]
+    return mtx
+
+def gaussingenuo(a,b):
+    matrix=[]
+    k=np.size(b)
+    for i in range(k+1):
+        for j in range(k+2):
+            matrix=np.zeros([i,j])
+    i=j=0
+    for i in range(k):  
+        for j in range(k):
+         matrix[i,j]=float(a[i,j])   
+    for i in range(k):
+         matrix[i,4]=float(b[0,i])
+   
+    i=1
+    while(i<k):
+      for j in range(k+1):
+          if j < i:
+           matrix = zeraelem(matrix, i, j, k)
+      i+=1   
+    i=1
+    m=np.zeros(k)
+    while i<k:
+        j=1
+        l=0
+        while j<i:
+            l+=(matrix[-i,-j-1]*m[k-j])
+            j+=1
+        m[k-i]=(-l+matrix[-i,k-1])/matrix[-i,-j-1]  
+        i+=1  
+    print(matrix)
+         
+# ============================== Space for Input ==============================
+a=np.array([[0.006, 2, -16, -7],[-7, 0.01, -16, 14],[-0.02, 8,-9,15],[2, -7, 9, 5]],dtype=float)   #define the matrix for solutions
+b=np.array([[14,-3, 17,-12]],dtype=float)                                                          #define solution matrix
+# ============================== Error Definition =============================
+# ============================== Main Loop/Output =============================
+st=time.time_ns()
+gaussingenuo(a,b)
+print(np.linalg.solve(a,(b.T)))
+ed=time.time_ns()
+print((ed-st)*10**-6,'ms')
+# ============================== Space for Plots ==============================
+# -----------------------------------------------------------------------------
+#################################################################
+###  EXERCÍCIO 5
+
+#=========================================================================================
+# ============================ Determinant with pivotament ===============================
+#################################
+# Considerations of project
+# Autor : Daniel Marques
+# Electrical Engeneering - 2021
+#################################
+#==============================================================================
+
+import numpy as np
+import time
+
+# ============================== Space for Functions ==========================
+def pivot (mtx,l,k):
+    i=0
+    while (i+l)<k:
+        if np.abs(mtx[l+i,l])>np.abs(mtx[l,l]):
+          a=mtx[l].copy()
+          mtx[l]=mtx[l+1]
+          mtx[l+1]=a
+        i+=1
+    return mtx
+def zeraelem(mtx, lin, c, k):
+    dy = mtx[lin,c]/mtx[c,c]
+    for i in range(k):
+        mtx[lin,i] = mtx[lin,i]-dy*mtx[c,i]
+    return mtx
+def determinat (a):
+    k=np.size(a[0])                                                                                                                                                  
+    matrix=np.zeros([k,k])
+    x=1
+    for i in range(k):
+        for j in range(k):
+            matrix[i,j]=matrix[i,j]+[a[i,j]]
+    for i in range(k):
+        matrix=pivot(matrix,i,k)
+ 
+    i=1
+    while(i<k):
+      for j in range(k):
+          if j < i:
+            matrix =zeraelem(matrix, i, j, k)
+      i+=1
+    for i in range(k):
+      x*=matrix[i,i]  
+    
+    print(x)
+    print (matrix)
+    
+# ============================== Space for Input ==============================
+a=np.array([[0.006,2 , -16, -7],[-7, 0.01, -16, 14],[-0.02, 8,-9,15],[2, -7, 9, 5]],dtype='f8') 
+# ============================== Error Definition =============================
+# ============================== Main Loop/Output =============================
+st=time.time_ns()
+determinat(a)
+dt= np.linalg.det(a)
+ed=time.time_ns()
+print(dt)
+print((ed-st)*10**-6,'ms')
+# ============================== Space for Plots ==============================
+# -----------------------------------------------------------------------------
+#################################################################
+###  EXERCÍCIO 6
+#==============================================================================
+# ============================ LU Decomposion =================================
+#################################
+# This project make a LU Decomposion with partial pivoting
+# Without pivoting comment the function on main def
+# Autor : Daniel Marques
+# Electrical Engeneering - 2021
+#################################
+#==============================================================================
+
+import numpy as np
+import time
+
+# ============================== Space for Functions ==========================
+def generated(mtxp,b,mtxl):
+    i=1
+    k=np.size(b)
+    m=mtxp@(b.T)
+    n=np.zeros(k,dtype=complex)
+ 
+    while i<k:
+        j=0
+        l=0
+        while j<i:
+            l+=(mtxl[i,j]*m[j])
+            j+=1
+        n[i]=(-l+(m[i]))  
+        i+=1
+    return n      #Create matrix D
+def generatmatrix(mtx,a,k):         #Create matrix U
+    for i in range(k):
+        for j in range(k):
+           mtx[i,j]=(a[i,j])
+    return mtx    
+def matrixl (mtx,k):
+    mtx=np.zeros([k,k],dtype=complex)
+    for i in range(k):
+        mtx[i,i]=1
+    return mtx                                  #Create matrix L
+def zeraelem(mtx,mtz,lin, c, k):
+    dy = mtx[lin,c]/mtx[c,c]
+    mtz[lin,c]=dy
+    for i in range(k):
+        mtx[lin,i] = mtx[lin,i]-dy*mtx[c,i]
+    return mtx,mtz                      #Made the up triangulantion 
+def pivot (mtxu,p,l,k):
+    i=0
+    while (i+l)<k:
+        if np.abs(np.real(mtxu[l+i,l]))>np.abs(np.real(mtxu[l,l])):
+          a=mtxu[l].copy()          
+          x=p[l].copy()
+          mtxu[l]=mtxu[l+1]
+          mtxu[l+1]=a
+          p[l]=p[l+1]
+          p[l+1]=x
+        i+=1
+    return mtxu,p                               #Main Pivoting
+def pivotl(mtxl,l,k):
+    i=0
+    while (i+l)<k:
+        if np.abs(mtxl[l+i,l])>np.abs(mtxl[l,l]):
+          a=mtxl[l].copy()
+          mtxl[l]=mtxl[l+1]
+          mtxl[l+1]=a
+        i+=1
+    return mtxl                                 #Pivot the P matrix
+# ============================== Main Function ================================
+def gaussingenuo(a,b):
+    mtxu=[]
+    mtxl=[]
+    p=[]
+    k=np.size(b)
+    d=[]
+    #-------------- Generation of Matrix L,U and P ----------------------
+    mtxu=np.zeros([k,k],dtype=complex)
+    mtxl=matrixl(mtxl,k)
+    p=np.zeros([k,k])
+    mtxu=generatmatrix(mtxu,a,k)
+    for i in range(k):
+        p[i,i]=1
+    #--------------- Structure for L ------------------------------------
+    i=1
+    while(i<k):
+      mtxu,p=pivot(mtxu,p,i,k)
+      for j in range(k+1):
+          if j < i:         
+            mtxu,mtxl = zeraelem(mtxu,mtxl ,i, j, k)
+      i+=1      
+    d=generated(p,b,mtxl)                               #Function for D matrix
+    d=np.reshape(d,(1,4))                               #Restruct the D matrix
+    x=np.zeros(k,dtype=complex)                         #Create the solution matrix
+    for i in range(k):
+        j=1
+        l=0
+        while j<(k):
+            l+=(mtxu[k-i-1,j]*d[0,j])
+            j+=1
+        x[k-1-i]=(-l+d[0,k-i-1])/mtxu[k-i-1,j-i-1]  
+        
+    print(x)   
+# ============================== Space for Input ==============================
+a=np.array([[3+2j, 2.3+2j, -16+2j, -17.7+7j],[-15-8j, 2.3+5j, -16+1j, 14-2j],[-5+13j, 8-9j, 60+3j, 7+9j],[-8+7j, -6+1j, 9+1j, 11+5j]],dtype= complex)
+b=np.array([[6+5j, -7.2+5j, 3+9.7j, 2-12.9j]],dtype=complex)
+# ============================== Error Definition =============================
+# ============================== Main Loop/Output =============================
+gaussingenuo(a,b)
+#print(np.size(b))
+#print(c@(b.T))
+#print(np.linalg.solve(a,(b.T)))
+# ============================== Space for Plots ==============================
+
+# -----------------------------------------------------------------------------
+#################################################################
+###  EXERCÍCIO 8
+
+#==============================================================================
+# ====================== LU Decomposion for Inverse ===========================
+#################################
+# This project make a LU Decomposion with partial pivoting
+# Without pivoting comment the function on main def
+# Autor : Daniel Marques
+# Electrical Engeneering - 2021
+#################################
+#==============================================================================
+
+import numpy as np
+import time
+import random as rd
+# ============================== Space for Functions ==========================
+def generated(mtxp,mtxl,b,l):
+    i=1
+    k=np.size(mtxp[0])
+ 
+    m=np.zeros(k)
+    n=np.zeros(k,dtype=float)
+    m[l]=1
+    n[l]=mtxl[0,0]
+    while i<k:
+        j=0
+        l=0
+        while j<i:
+            l+=(mtxl[i,j]*m[j])
+            j+=1
+        n[i]=(-l+(m[i])) 
+        i+=1
+    return n                         #Create matrix D
+def generatmatrix(mtx,a,k):         
+    for i in range(k):
+        for j in range(k):
+           mtx[i,j]=(a[i,j])
+    return mtx                           #Create matrix U
+def matrixl (mtx,k):
+    mtx=np.zeros([k,k],dtype=float)
+    for i in range(k):
+        mtx[i,i]=1
+    return mtx                                  #Create matrix L
+def zeraelem(mtx,mtz,lin, c, k):
+    dy = mtx[lin,c]/mtx[c,c]
+    mtz[lin,c]=dy
+    for i in range(k):
+        mtx[lin,i] = mtx[lin,i]-dy*mtx[c,i]
+    return mtx,mtz                      #Made the up triangulantion 
+def pivot (mtxu,p,l,k):
+    i=0
+    while (i+l)<k:
+        if np.abs(np.real(mtxu[l+i,l]))>np.abs(np.real(mtxu[l,l])):
+          a=mtxu[l].copy()          
+          x=p[l].copy()
+          mtxu[l]=mtxu[l+1]
+          mtxu[l+1]=a
+          p[l]=p[l+1]
+          p[l+1]=x
+        i+=1
+    return mtxu,p                               #Main Pivoting
+def pivotl(mtxl,l,k):
+    i=0
+    while (i+l)<k:
+        if np.abs(mtxl[l+i,l])>np.abs(mtxl[l,l]):
+          a=mtxl[l].copy()
+          mtxl[l]=mtxl[l+1]
+          mtxl[l+1]=a
+        i+=1
+    return mtxl                                 #Pivot the P matrix   
+def solvinv(d,mtxu,x,k):
+    x[k-1]=d[0,k-1]/mtxu[k-1,k-1]    
+    i = 1
+    while i < k:
+         j = 0
+         aux = 0
+         while j < i:
+             aux += (mtxu[k-i-1][k-j-1]*x[k-j-1] )
+             j += 1
+         
+         x[k -i-1] = (-aux+d[0,k-i-1] )/mtxu[i,i]
+         i += 1
+    x[0]=(x[0]/mtxu[0,0])*10   
+    return x
+def generatea(m,n,matrix,k):
+    
+    i=0
+    
+    while i!=k:
+        j=0
+        while j<k:
+            matrix[i,j]=float(rd.uniform(-50,200))
+            j+=1
+        i+=1    
+    return matrix
+        
+# ============================== Main Function ================================
+def gaussingenuo(a,b):
+    mtxu=[]
+    mtxl=[]
+    p=[]
+    k=np.size(b)
+    d=[]
+    #-------------- Generation of Matrix L,U and P ----------------------
+    mtxu=np.zeros([k,k],dtype=float)
+    mtxl=matrixl(mtxl,k)
+    p=np.zeros([k,k])
+    mtxu=generatmatrix(mtxu,a,k)
+    for i in range(k):
+        p[i,i]=1
+    #--------------- Structure for L ------------------------------------
+    i=1
+    while(i<k):
+      mtxu,p=pivot(mtxu,p,i,k)
+      for j in range(k+1):
+          if j < i:         
+            mtxu,mtxl = zeraelem(mtxu,mtxl ,i, j, k)
+      i+=1      
+    x=np.zeros(k,dtype=float)                               #Create the solution matrix
+    out=np.zeros([k,k])
+    for i in range(k):
+        d=generated(p,mtxl,b,i)                               #Function for D matrix
+        d=np.reshape(d,(1,k))                                 #Restruct the D matrix
+        for j in range(k):  
+            x = solvinv(d,mtxu,x,k)
+            out[j,i]=x[j] 
+    print(out)      
+# ============================== Space for Input ==============================
+m=input('Número de Linhas:')
+n=input('Número de Colunas:')
+aux1=int(m)
+aux2=int(n)
+b=np.zeros([aux1,1])                           #base solution matrix
+
+# ============================== Error Definition =============================
+# ============================== Main Loop/Output =============================
+st=time.time_ns()
+matrix=np.zeros([aux1,aux2],dtype=float)       #generate a base matrix with zeros
+k=np.size(matrix[0])                           #number of therms
+matrix=generatea(m,n,matrix,k)                 #generate a random matrix
+gaussingenuo(matrix,b)                         #solve the matrix 'A' and 'B'
+ed=time.time_ns()
+print((ed-st)*10**-6,'ms')
+# ============================== Space for Plots ==============================

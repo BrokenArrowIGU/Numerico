@@ -1,0 +1,53 @@
+#coding: uft-8
+import math
+def Newton(f, flin, x0, epsilon, maxInter=50):
+  if abs(f(x0))<= epsilon:
+    return x0
+  print("k\t x0\t\t f(x0)")
+  k=1
+  while k<=maxInter:
+    x1=x0-f(x0)/flin(x0)
+    print("%d\t%e\t%e"%(k,x1,f(x1)))
+    if abs (f(x1))<= epsilon:
+      return x1
+    x0=x1
+    k=k+1
+  print("error: Numero maximo de interacoes atingido.")
+  return x1
+if __name__ == "__main__":
+  Wsin=377
+  Pn=500
+  V=2300
+  T=1980
+  P=4
+  R1=0.262
+  X1=1.206
+  X2=1.206
+  Xm=54.02
+  R2=0.187
+  Rext=1
+  X2lin=X2
+  s=-(R2)/(math.sqrt((Rth**2)+(Xth+X2lin)**2))
+  R2lin=(R2/s)+1j*X2
+  Vth=(1j*Xm)/(R1+1j*(X1+Xm))*V
+  Rth=((Xm**2)*R1)/((R1**2)+(X1+Xm)**2)
+  Zth=(1j*Xm*(R1+1j*X1))/(R1+1j*(X1+Xm))
+  Xth=(Xm*(R1**2)+(X1**2)+R1*X1)/((R1**2)+(X1+Xm)**2)
+  B=(Rext+R2lin**2)
+  A=((Rth+B)**2)+((Xth+X2lin)**2)
+  I1=Pn/V
+  E1=(R1+1j*X1)*I1
+  Pr=Pn-(P*I1**2*R1)
+  I2=math.sqrt(Pr/R2*P)
+  E2=(R2+1j*X2)*I2
+  B=(Rext+R2lin**2)
+  A=((Rth+B)**2)+((Xth+X2lin)**2)
+  alpha=E1/E2
+
+
+  def f(x):
+    return (((3*P)/(2*Wsin))*(((Vth**2)*(R2lin/s))/((Rth+(R2lin/s))**2+(Xth+X2lin)**2)))
+  def flin(X):
+    return (3*P*Vth**2*(abs(A)*s-2*(Rth+B)*B))/(2*Wsin*(abs(A)*s)**2)
+raiz=Newton(f, flin,1,0.0001)
+print(raiz)
