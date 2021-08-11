@@ -1,0 +1,287 @@
+========================= Exercícios 1/2 =========================
+#==============================================================================
+# ============================ Regressão Multipla ===============================
+#################################
+# Considerations of project
+# Autor : Daniel Marques
+# Electrical Engeneering - 2021
+#################################
+#==============================================================================
+
+import numpy as np
+import pandas as pd
+import time as tp
+
+# ============================== Space for Functions ==========================
+def regmulta(a,aux1,aux2):
+    
+    for i in range(len(aux1)):
+        a[0,1] = a[0,1] + (float(aux1['Diâmetro - D [m]'][i]))                                                # Somatorio de x1
+        a[1,0] = a[0,1]
+        a[0,2] = a[0,2] + (float(aux2['Inclinação - S [m/m]'][i]))                                            # Somatorio de x2
+        a[2,0] = a[0,2]
+        a[1,2] = a[1,2] + ((float(aux1['Diâmetro - D [m]'][i]))*(float(aux2['Inclinação - S [m/m]'][i])))     # Somatorio de x1*x2
+        a[2,1] = a[1,2] 
+        a[1,1] = a[1,1] + (float(aux1['Diâmetro - D [m]'][i]))**2                                             # Somatorio de x1^2
+        a[2,2] = a[2,2] + (float(aux2['Inclinação - S [m/m]'][i]))**2                                         # Somatorio de x2^2
+    return  a
+def regmultb(b,yaux,aux1,aux2):
+    for i in range(len(yaux)):
+        b[0] = b[0] + (float(yaux['Escoamento - Q [m³/s]'][i]))                                                  #Somatorio de y
+        b[1] = b[1] + ((float(aux1['Diâmetro - D [m]'][i]))*(float(yaux['Escoamento - Q [m³/s]'][i])))           #Somatorio de x1*y
+        b[2] = b[2] + ((float(aux2['Inclinação - S [m/m]'][i]))*(float(yaux['Escoamento - Q [m³/s]'][i])))       #Somatorio de x2*y
+    
+    return b
+def zeraelem(mtx, lin, c, k):
+    dy = mtx[c,c]/mtx[lin,c]
+  
+    for i in range(k+1):
+        mtx[lin,i] = mtx[lin,i]*dy-mtx[c,i]
+    return mtx
+def pivot (mtx,l,k):
+    i=0
+    while (i+l)<k:
+        if np.abs(mtx[l+i,l])>np.abs(mtx[l,l]):
+          a=mtx[l].copy()
+          mtx[l]=mtx[l+1]
+          mtx[l+1]=a
+        i+=1
+    return mtx
+def gaussingenuo(a,b):
+    matrix=[]
+    k=np.size(b)
+    for i in range(k+1):
+        for j in range(k+2):
+            matrix=np.zeros([i,j])
+    i=j=0
+    for i in range(k):  
+        for j in range(k):
+         matrix[i,j]=float(a[i,j])   
+    for i in range(k):
+         matrix[i,3]=float(b[i])
+   
+    i=1
+    while(i<k):
+      matrix=pivot(matrix,i,k)
+      for j in range(k+1):
+          if j < i:         
+            matrix = zeraelem(matrix, i, j, k)
+      i+=1   
+    i=1
+    m=np.zeros(k)
+    while i<k:
+        j=1
+        l=0
+        while j<i:
+            l+=(matrix[-i,-j-1]*m[k-j])
+            j+=1
+        m[k-i]=(-l+matrix[-i,k-1])/matrix[-i,-j-1]  
+        i+=1
+    return matrix
+# ============================== Space for Input ==============================
+v = int(input('Dimensão da Matriz A :'))
+#n = int(input('Número de pontos :'))
+a = np.zeros([v,v])
+x = np.zeros(v+1)
+b = np.zeros(v)
+
+aux1 = pd.read_csv(r"E:\Faculdade\Numerico\5°Bimestre\Dados_RegressaoLinearMultipla.csv",encoding = "UTF-8",sep = ";",usecols=['Diâmetro - D [m]'],nrows=9)
+aux2 = pd.read_csv(r"E:\Faculdade\Numerico\5°Bimestre\Dados_RegressaoLinearMultipla.csv",encoding = "UTF-8",sep = ";",usecols=['Inclinação - S [m/m]'],nrows=9)
+yaux = pd.read_csv(r"E:\Faculdade\Numerico\5°Bimestre\Dados_RegressaoLinearMultipla.csv",encoding = "UTF-8",sep = ";",usecols=['Escoamento - Q [m³/s]'],nrows=9)
+n = len(yaux)
+a[0,0] = n
+#%% -----------------------------------------------------------------------------
+
+#%% -----------------------------------------------------------------------------
+   
+#%%  ============================= Error Definition =============================
+#%% ============================== Main Loop/Output =============================
+a = regmulta(a,aux1,aux2)
+b = regmultb(b,yaux,aux1,aux2)
+x = gaussingenuo(a,b)
+print(x)
+#%% ============================== Space for Plots  =============================
+##############################################################################
+========================= Exercícios 3 =======================================
+##############################################################################
+# ============================ Regressão Não Linear ===============================
+#################################
+# Considerations of project
+# Autor : Daniel Marques
+# Electrical Engeneering - 2021
+#################################
+#==============================================================================
+
+import numpy as np
+import pandas as pd
+import time as tp
+from scipy.optimize import curve_fit
+import matplotlib.pyplot as plt
+import math as mp
+# ============================== Space for Functions ==========================
+def f(x,a):
+    return a*np.log(x)
+def fx(x,a):
+    return popt*np.log(x)
+# ============================== Space for Input ==============================
+aux1 = pd.read_csv(r"E:\Faculdade\Numerico\5°Bimestre\Dados_Protecao.csv",encoding = "UTF-8",sep = ";",usecols=['Desbalanço de Potência Ativa [pu]'],header = 1,decimal=',')
+yaux = pd.read_csv(r"E:\Faculdade\Numerico\5°Bimestre\Dados_Protecao.csv",encoding = "UTF-8",sep = ";",usecols=['Tempo de Detecção [ms]'], header = 1,decimal=',')
+n = len(yaux)
+
+a = np.zeros(n,dtype = float)
+
+b = np.zeros(n,dtype = float)
+
+
+for i in range (n):
+    a[i] = a[i] + (float(aux1['Desbalanço de Potência Ativa [pu]'][i]))
+    b[i] = b[i] + (float(yaux['Tempo de Detecção [ms]'][i])) 
+#%%  ============================= Error Definition =============================
+#%% ============================== Main Loop/Output =============================
+popt,pconv = curve_fit(f,a,b)
+
+vx = np.linspace(0,100,101)
+xv = fx(vx,yaux)
+print(np.size(yaux))
+#%% ============================== Space for Plots  =============================
+plt.plot(yaux,aux1,'ro')
+plt.plot(yaux,xv)
+plt.xlabel('Tempo de Detecção [ms]')
+plt.ylabel('Desbalanço de Potência Ativa [pu]')
+plt.grid()
+plt.show()
+##############################################################################
+========================= Exercícios 4 =======================================
+##############################################################################
+# =================================================================================
+# ========================= Interpolação de Newton ================================
+#################################
+# Considerations of project
+# Autor : Daniel Marques
+# Electrical Engeneering - 2021
+#################################
+#==============================================================================
+
+import numpy as np
+import pandas as pd
+import time as tp
+import matplotlib.pyplot as plt
+
+# ============================== Space for Functions ==========================
+def divided_diff(x, y):        # calcula a tabela de diferenças finitas
+    
+    n = len(y)
+    coef = np.zeros([n, n])
+    coef[:,0] = y
+    
+    for j in range(1,n):
+        for i in range(n-j):
+            coef[i][j] = \
+           (coef[i+1][j-1] - coef[i][j-1]) / (x[i+j]-x[i])
+            
+    return coef
+
+def newton_poly(coef, x_data, x):      # Calcula o Valor de x no polinomio de Newton
+   
+    n = len(x_data) - 1
+    p = coef[n]
+    for k in range(1,n+1):
+        p = coef[n-k] + (x -x_data[n-k])*p
+    return p
+# ============================== Space for Input ==============================
+st = tp.time_ns()
+x = pd.read_csv(r"E:\Faculdade\Numerico\5°Bimestre\Dados_Interpolacao_1.csv",encoding = "UTF-8",sep = ";",usecols=['x'],decimal=',')
+y = pd.read_csv(r"E:\Faculdade\Numerico\5°Bimestre\Dados_Interpolacao_1.csv",encoding = "UTF-8",sep = ";",usecols=['f(x)'],decimal=',')
+n = len(y)
+
+a = np.zeros(n,dtype = float)
+
+b = np.zeros(n,dtype = float)
+
+for i in range (n):
+    a[i] = a[i] + (float(x['x'][i]))
+    b[i] = b[i] + (float(y['f(x)'][i]))
+print('Digite a Ordem <',n)
+k = int(input())
+coef = np.zeros(k,dtype = float)
+print('Entre com os pontos interpoladores')
+for i in range(k):
+    
+    coef[i] = input()
+#%%  ============================= Error Definition =============================
+#%% ============================== Main Loop/Output =============================
+df = divided_diff(a, b)[0, :]
+
+# evaluate on new data points
+xa = np.linspace(0,6,20)
+ya = newton_poly(df,a,xa)
+y_new = newton_poly(df, a, coef)
+#%% ============================== Space for Plots  =============================
+plt.plot(a,b,'ro')
+plt.plot(coef,y_new)
+plt.plot(4,y_new[3],'ro')
+plt.plot(xa,ya,color = 'g')
+plt.xlabel('x')
+plt.ylabel('f(x)')
+plt.grid()
+plt.show()
+
+=================================================================================
+##############################################################################
+# ============================ Interpolação Lagrange ===============================
+#################################
+# Considerations of project
+# Autor : Daniel Marques
+# Electrical Engeneering - 2021
+#################################
+#==============================================================================
+import numpy as np
+from scipy.interpolate import lagrange
+import matplotlib.pyplot as plt
+import pandas as pd
+
+
+a = pd.read_csv(r"E:\Faculdade\Numerico\5°Bimestre\Dados_Interpolacao_1.csv",encoding = "UTF-8",sep = ";",usecols=['x'],decimal=',')
+b = pd.read_csv(r"E:\Faculdade\Numerico\5°Bimestre\Dados_Interpolacao_1.csv",encoding = "UTF-8",sep = ";",usecols=['f(x)'],decimal=',')
+n = len(b)
+
+x = np.zeros(n,dtype = float)
+y = np.zeros(n,dtype = float)
+
+
+for i in range (n):
+    x[i] = x[i] + (float(a['x'][i]))
+    y[i] = y[i] + (float(b['f(x)'][i])) 
+
+# Reading interpolation point
+xp = float(input('Ponto Interpolador: '))
+
+# Set interpolated value initially to zero
+yp = 0
+
+# Implementing Lagrange Interpolation
+for i in range(n):
+    p = 1
+    for j in range(n):
+        if i != j:
+            p = p * (xp - x[j])/(x[i] - x[j])
+    yp = yp + p * y[i]    
+
+# Displaying output
+xa = np.linspace(0,6,6)
+f = lagrange(x,y)
+plt.plot(xa, f(xa), 'b', x, y, 'ro', xp,yp,'go')
+plt.title('Lagrange Polynomial')
+plt.grid()
+plt.xlabel('x')
+plt.ylabel('y')
+plt.show()
+print('Interpolated value at %.3f is %.3f.' % (xp, yp))
+
+##############################################################################
+========================= Exercícios 6 =======================================
+##############################################################################
+Mesmos Códigos de 4
+##############################################################################
+========================= Exercícios 7 =======================================
+##############################################################################

@@ -1,0 +1,189 @@
+#################################################################
+###   EXERCÍCIO 1    
+#------------------------------------ Método do Ponto Fixo -------------------------------
+
+#open method                                                       
+# This find zeros of the function 
+# Autor : Daniel Marques
+
+import numpy as np
+import matplotlib.pyplot as mp
+import math as mt
+
+def Fixeddot(xn,e,Er,i,ft):
+    xa = 0
+    while Er>e:
+      
+        xn = 2*mt.sin(np.sqrt(xn))-xn
+        Er = abs((xn-xa)/xn)
+        ft += [Er]
+        i += 1
+        xa = xn
+
+        format_float = "{:.4f}".format(xn)
+    return print(format_float), print('Progressão do Erro:\n',ft),print('N° Interações: ',i)
+#---------------------------- Input datas ------------------------
+
+a=float(input('Digite os Limite inf:'))
+
+# -------------------------- Error Definition ----------------------
+
+e = 10**(-3)
+Er = 1
+i = 0
+ft = []
+
+# ------------------------------ Main Loop -----------------------------
+
+Fixeddot(a,e,Er,i,ft)
+
+#################################################################
+###  EXERCÍCIO 2 
+#------------------------------------ Método de Newton-Raphson -------------------------------
+ 
+# This find zeros of the function using approximit of derivate of function
+# Author : Daniel Marques
+
+import time
+import numpy as np
+def NewtonRaph(xn,e,Er,i,xt):
+    xa = 0
+    while Er>e:
+      
+        xn =  xn -((2*xn**3-11.7*xn**2+14.7*xn-5)/(6*xn**2-23.4*xn+14.7))
+        Er = abs((xn-xa)/xn)
+        xt += [Er]
+        i += 1
+        xa = xn
+        format_float = "{:.4f}".format(xn)
+    return print('Raíz estimada em: ',format_float), print('Progressão do Erro:\n',xt),print('N° Interações: ',i)
+  
+#========================== Input =====================================
+a = float(input('Defina Xo:'))
+#====================== Initial Definitions ===========================
+xn = a
+Er = 1
+e = 10**(-4)
+i = xa = 0
+xt = []
+#fx = e**(-xn) - xn    If modify, modify on the def too
+#f'x = - e**(-xn) - 1
+
+#========================== Main Loop ================================
+inicio=time.time()
+NewtonRaph(xn,e,Er,i,xt)
+fim=time.time()
+print('Tempo necessário:',fim-inicio,'s')
+
+#################################################################
+###  EXERCÍCIO 3 
+
+//------------------------------------ Método de Newton-Raphson -------------------------------
+// code for SciLab 
+// This find zeros of the function using approximit of derivate of function
+// Author : Daniel Marques
+
+ 
+//====================== Initial Definitions ===========================
+xn = 0
+Er = 1
+e = 10**(-4)
+i = 0
+xt = 0
+xa = 0
+//========================== Main Loop ================================
+
+    while Er>e,
+        xn =  xn -((exp(-xn)-xn)/(-exp(-xn)-1) );
+        Er = abs((xn-xa)/xn);
+        xt = Er;
+        i = i + 1;
+        xa = xn;
+end
+
+#################################################################
+###  EXERCÍCIO 4
+
+     #------------------------------------ Método da Secante -------------------------------
+ 
+# This find zeros of the function using an artific for fast conversion
+# Autor : Daniel Marques
+
+#xn+1=xn-(f(xn)*(xa-xn))/(f(xa)-f(xn))
+import numpy as np
+import time
+
+def Secante(xo,xa,e,Er,i,xt):
+    xn = xo
+    k=0
+    while Er>e:
+        fn=float((xn**10-1))
+        fa=float((xa**10-1))
+        k=xn
+        xn =  xn -((fn*(xa-xn))/(fa-fn))
+        Er = abs((xn-xa)/xn)
+        xt += [Er]
+        i += 1
+        xa = k
+    return print(xn), print(xt),print(i)
+
+#---------------------------- Input datas ------------------------
+
+xo=float(input('Defina x0: '))
+xao=float(input('Defina x-1:'))
+
+# -------------------------- Error Definition ----------------------
+
+e = 10**(-3)
+Er=1
+i = 0
+ft = []
+
+# ------------------------------ Main Loop/Output -----------------------------
+ini=time.time()
+Secante(xo,xao,e,Er,i,ft)
+f=time.time()
+print(f-ini)
+# -----------------------------------------------------------------------------
+#################################################################
+###  EXERCÍCIO 5
+#------------------------------------ Secante Modificado -------------------------------
+ 
+# This find zeros of the function using an artific for fast conversion
+# Autor : Daniel Marques
+
+#xn+1=xn-qsi*xn*f(xn)/(f(xn+qsi*xn)-f(xn))
+import numpy as np
+import time
+
+def Secante(xo,qsi,e,Er,i,xt):
+    xn = xo
+    k=0
+    while Er>e:
+        fn=float(xn**10-1)
+        fq=float((xn+(qsi*xn))**10-1)
+        k=xn
+        xn =  xn -((qsi*xn*fn)/(fq-fn))
+        Er = abs((xn-k)/xn)
+        xt += [Er]
+        i += 1
+    return print(xn), print(xt),print(i)
+
+#---------------------------- Input datas ------------------------
+
+xo=float(input('Defina x0: '))
+qsi=float(input('Defina qsi:'))
+
+# -------------------------- Error Definition ----------------------
+
+e = 10**(-5)
+Er=1
+i = 0
+ft = []
+
+# ------------------------------ Main Loop/Output -----------------------------
+ini=time.time()
+Secante(xo,qsi,e,Er,i,ft)
+f=time.time()
+print(f-ini)
+# -----------------------------------------------------------------------------
