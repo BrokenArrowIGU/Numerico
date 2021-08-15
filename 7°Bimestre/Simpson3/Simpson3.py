@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 # ============================== Space for Functions ==========================
 def f(x):                                              # Espaço para uso da função definida automaticamente
 
-    return 400*x**5-900*x**4+675*x**3-200*x**2+25*x+0.2
+    return np.sin(x)
 
 def simpson3_8(a, b, d, v):                            
 
@@ -51,6 +51,7 @@ xa = np.linspace(Lim_a,Lim_b,n)                         # Vetor de valores plot
 
 # ============================== Main Loop/Output =============================
 print('Valor da Integral por Simpson 3/8:', simpson3_8(Lim_a, Lim_b, n,aux))
+print('\nNúmero de retangulos usados:',n)
 
 # ============================== Space for Plots ==============================
 plt.plot(xa, f(xa), 'b')                                    #Plotagem do gráfico real da função de análise
