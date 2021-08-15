@@ -9,11 +9,11 @@
 
 import numpy as np
 import time
-
+import matplotlib.pyplot as plt
 # ============================== Space for Functions ==========================
 def f(x):
 
-    return 400*x**5-900*x**4+675*x**3-200*x**2+25*x+0.2
+    return np.sin(x)
 
 def trapezio(a, b, d):                            
 
@@ -29,8 +29,19 @@ Lim_a = float(input('Limite Inferior:'))
 Lim_b = float(input('Limite Superior:'))
 
 # ============================== Error Definition =============================
-n = int(1 / (5 * 10**-3))   # Número de Subdivisões
+n = int(1 / (5 * 10**-3))                               # Número de Subdivisões
+xa = np.linspace(Lim_a,Lim_b,n)                         # Vetor de valores plot
 
 # ============================== Main Loop/Output =============================
-print('Valor da Integral:', trapezio(Lim_a, Lim_b, n))
+
+I = trapezio(Lim_a, Lim_b, n)
+E_t = -1/12*(-f(I)*(Lim_b-Lim_a)**3)
+print('\nValor da Integral Trapezoidal:',I)
+print('\nErro Total:',E_t)
 # ============================== Space for Plots ==============================
+plt.plot(xa, f(xa), 'b')
+plt.title('F(x) = Sen (x)')
+plt.grid()
+plt.xlabel('x')
+plt.ylabel('y')
+plt.show()
