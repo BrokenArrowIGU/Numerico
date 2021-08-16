@@ -19,30 +19,13 @@ def V_f(x):
     f = 60
     Ang = 0
     return  Vrms*np.sqrt(2)*np.cos(2*np.pi*f*x + Ang)
-
-def simpson1_3(a, b, d, v):                            
-
-    delta = (b - a) / d
-    x = a
-    s = 0
-    if(v == 'f'):
-        for i in range(d):
-            s = s + (f(x)+f(x+delta))*delta/3
-            x = x + delta
-    else:
-        x_a = np.linspace(a,b,len(v))
-        y_a  = interpolate.CubicSpline(x_a,v)
-        for i in range(d):
-            s = s + (y_a(x)+y_a(x+delta))*delta/3
-            x = x + delta
-
-    return s  
+ 
 # ============================== Space for Input ==============================
 
 L = 176*10**-3                                          # Valor do indutor
 
 dt = 0.1                                                # Tempo de Simulação
-t = 1*10**-6                                            # Duração
+t = 4*10**-3                                            # Duração
 
 f = 60                                                  # Frequência
 Vrms = 127                                              # Tensão Rms
