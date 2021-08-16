@@ -21,8 +21,8 @@ def trapezio(a, b, d):
     x = a
     s = 0
     for i in range(d):
-        s = s + (f(x)+f(x+delta))*delta/2
-        x = x + delta
+        s += (f(x) + f(x+delta)) * delta / 2
+        x += delta
     return s 
 # ============================== Space for Input ==============================
 Lim_a = float(input('Limite Inferior:'))

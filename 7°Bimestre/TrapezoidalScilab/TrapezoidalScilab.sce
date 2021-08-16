@@ -1,1 +1,1 @@
-Socorro! Eu não sei usar isso.
+3 + 1;
