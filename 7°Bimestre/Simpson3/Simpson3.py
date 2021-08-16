@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 # ============================== Space for Functions ==========================
 def f(x):                                              # Espaço para uso da função definida automaticamente
 
-    return np.sin(x)
+    return 400*x**5-900*x**4+675*x**3-200*x**2+25*x+0.2
 
 def simpson3_8(a, b, d, v):                            
 
@@ -56,6 +56,7 @@ print('\nNúmero de retangulos usados:',n)
 # ============================== Space for Plots ==============================
 plt.plot(xa, f(xa), 'b')                                    #Plotagem do gráfico real da função de análise
 plt.grid()
+plt.title('f(x) = 400x^5-900x^4+675x^3-200x^2+25x+0.2')
 plt.xlabel('x')
 plt.ylabel('y')
 plt.show()

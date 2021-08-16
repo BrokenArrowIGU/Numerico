@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 # ============================== Space for Functions ==========================
 def f(x):
 
-    return np.sin(x)
+    return 400*x**5-900*x**4+675*x**3-200*x**2+25*x+0.2
 
 def trapezio(a, b, d):                            
 
@@ -40,7 +40,7 @@ print('\nValor da Integral Trapezoidal:',I)
 print('\nErro Total:',E_t)
 # ============================== Space for Plots ==============================
 plt.plot(xa, f(xa), 'b')
-plt.title('F(x) = Sen (x)')
+plt.title('F(x) = 400x^5-900x^4+675x^3-200x^2+25x+0.2')
 plt.grid()
 plt.xlabel('x')
 plt.ylabel('y')
