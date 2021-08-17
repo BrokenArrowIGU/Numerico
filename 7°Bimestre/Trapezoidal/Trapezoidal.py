@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 # ============================== Space for Functions ==========================
 def f(x):
 
-    return 400*x**5-900*x**4+675*x**3-200*x**2+25*x+0.2
+    return np.exp(-x**2)
 
 def trapezio(a, b, d):                            
 
