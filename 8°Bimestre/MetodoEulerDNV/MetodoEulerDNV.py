@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 # ============================== Space for Functions ==========================
 def dy (t,y):
     return 4*np.exp(0.8*t)-0.5*y
-def EulerEDO(a,b,ci,h,dy):
+def EulerEDO(a,b,ci,h):
     yn = ci
     for i in range(0,b,h):
         y = yn
@@ -27,10 +27,8 @@ ci = 2
 # ============================== Error Definition =============================
 
 # ============================== Main Loop/Output =============================
-y = ci
-for i in range(0,b,h):
-    y_a = y
-    y = y + dy(i,y_a)*h
+
+y = EulerEDO(a,b,ci,h)
 
 # ============================== Space for Plots ==============================
 print("O Resultado pelo Método de Euler é: ",round(y,4))
