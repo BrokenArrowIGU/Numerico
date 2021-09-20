@@ -32,3 +32,5 @@ n = int(1 / (5 * 10^-3));               // Divisões no intervalo
 
 I = trapezio(Lim_a, Lim_b, n);          // Resultado de integração
 E_t = -1 / 12 * (-f(I) * (Lim_b - Lim_a)^3) // Erro total
+
+disp(I, E_t)
