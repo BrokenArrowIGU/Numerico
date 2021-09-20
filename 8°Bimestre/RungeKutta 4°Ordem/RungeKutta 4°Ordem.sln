@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31624.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "RungeKutta 4°Ordem", "RungeKutta 4°Ordem.pyproj", "{4C6A4DCE-2098-4F85-989B-41E2EF32278F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4C6A4DCE-2098-4F85-989B-41E2EF32278F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C6A4DCE-2098-4F85-989B-41E2EF32278F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4C7CCAD6-1066-47DE-BF78-82B850EB42D9}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31624.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "PontoMedio", "PontoMedio.pyproj", "{9421D979-BDBC-4A3A-B7A9-C281EBC25822}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9421D979-BDBC-4A3A-B7A9-C281EBC25822}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9421D979-BDBC-4A3A-B7A9-C281EBC25822}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4BB6520F-B439-45FB-BE1F-C3D688CE9673}
+	EndGlobalSection
+EndGlobal
